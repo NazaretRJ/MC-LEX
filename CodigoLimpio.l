@@ -10,7 +10,7 @@
     void escribir_datos ();
 %}
 bucle   [(for)|(while)]
-caracter    [0-9|a-z|A-Z|\=|\;|\+\-| ]
+caracter    [0-9|a-z|A-Z|\=|\;|\+\-| |\/|\*]
 alfanum     [0-9|a-z|A-Z]
 condición   [(if) | (else)]
 simbolos    [\=|\/|\+|\-|\*]
@@ -23,7 +23,6 @@ punto_coma  [\;]
 {alfanum}{simbolo}{alfanum}   {poner_espacio(yytext);}
 {alfanum}{punto_coma}  {poner_espacio(yytext);}
 
-[a-z]*[A-Z]*{digito}*\@([a-z]+{digito}*\.)+{dominio}+ { correo.push_back(yytext); linea_correo.push_back(nl); }
 
 {digito}{digito}{digito}{digito}[\- ]*[A-Z][A-Z][A-Z] { matricula.push_back(yytext); linea_matricula.push_back(nl); }
 
