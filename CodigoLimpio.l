@@ -9,14 +9,14 @@
 
     void escribir_datos ();
 %}
-bucle    [(for)|(while)]
+bucle   [(for)|(while)]
 caracter    [a-z|A-Z|\=|\;|\+\-| ]
-condición    [(if) | (else)]
+condición   [(if) | (else)]
 /*----- Sección de Reglas ----------------*/
 %%
-{bucle}\({caracter}+\)\{  {codigo_final+=yytext }
-{bucle}\({caracter}+\)    {codigo_final+=yytext+’{‘}
-
+{bucle}\({caracter}+\)\{    {codigo_final+=yytext;}
+{bucle}\({caracter}+\)  {codigo_final+=yytext + "{" ;}
+{condicion}\({caracter}+\)  {codigo_final+=yytext + "{" ;}    
 
 [0-4]{digito}{digito}{digito}{digito} { linea_codigo_postal.push_back(nl); codigo_postal.push_back(yytext); }
 [5][0|1|2]{digito}{digito}{digito} { linea_codigo_postal.push_back(nl); codigo_postal.push_back(yytext); }
