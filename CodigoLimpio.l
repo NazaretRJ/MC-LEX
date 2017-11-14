@@ -10,16 +10,18 @@
     void escribir_datos ();
 %}
 bucle   [(for)|(while)]
-caracter    [a-z|A-Z|\=|\;|\+\-| ]
+caracter    [0-9|a-z|A-Z|\=|\;|\+\-| ]
+alfanum     [0-9|a-z|A-Z]
 condición   [(if) | (else)]
+simbolos    [\=|\/|\+|\-|\*]
+punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
 {bucle}\({caracter}+\)\{    {codigo_final+=yytext;}
 {bucle}\({caracter}+\)  {codigo_final+=yytext + "{" ;}
-{condicion}\({caracter}+\)  {codigo_final+=yytext + "{" ;}    
-
-[0-4]{digito}{digito}{digito}{digito} { linea_codigo_postal.push_back(nl); codigo_postal.push_back(yytext); }
-[5][0|1|2]{digito}{digito}{digito} { linea_codigo_postal.push_back(nl); codigo_postal.push_back(yytext); }
+{condicion}\({caracter}+\)  {codigo_final+=yytext + "{" ;}
+{alfanum}{simbolo}{alfanum}   {poner_espacio(yytext);}
+{alfanum}{punto_coma}  {poner_espacio(yytext);}
 
 [a-z]*[A-Z]*{digito}*\@([a-z]+{digito}*\.)+{dominio}+ { correo.push_back(yytext); linea_correo.push_back(nl); }
 
