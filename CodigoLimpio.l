@@ -76,6 +76,7 @@ void escribe_fichero(){
   fi.close();
 }
 
+
 void poner_espacio_final(string orig){
 	//sabemos que el último carácter es ;
 	std::string::iterator it=orig.end();
