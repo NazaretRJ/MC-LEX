@@ -32,7 +32,7 @@ punto_coma  [\;]
 \}  {indentacion--;}
 
 \n          {poner_indentacion();}
-
+^[\t]	{codigo_final=codigo_final+yytext;}
 
 %%
 /*----- Sección de Procedimientos --------*/
