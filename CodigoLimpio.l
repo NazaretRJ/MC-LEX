@@ -76,7 +76,8 @@ void escribe_fichero(){
   fi.close();
 }
 
-void poner_espacio_final(string& orig){
+
+void poner_espacio_final(string orig){
 	//sabemos que el último carácter es ;
 	std::string::iterator it=orig.end();
 	it--;
@@ -92,12 +93,12 @@ void poner_espacio_oper(string orig){
 	
 	for(int i = 0; i < orig.size(); i++ ){
 		if( orig[i] == '=' || orig[i] == '/' || orig[i] == '+' || orig[i] == '-' || orig[i] == '*' ){
-			aux.push_back(" ");
-			aux.push_back(orig[i]);
-			aux.push_back(" ");
+			aux.append(" ",sizeof(char));
+			aux.append(orig[i],sizeof(char));
+			aux.append(" ",sizeof(char));
 		}
 		else
-			aux.push_back(orig[i]);
+			aux.append(orig[i],sizeof(char));
 	}
 
 	codigo_final=codigo_final+aux;
