@@ -2,7 +2,8 @@
 %{
     #include <iostream>
     #include <vector>
-	#include<fstream>
+    #include <fstream>
+
     using namespace std;
 
     std::string codigo_inicial;
@@ -16,23 +17,24 @@
 	
 %}
 bucle   [(for)|(while)]
-caracter    [0-9|a-z|A-Z|\=|\;|\+\-| |\/|\*]
-alfanum     [0-9|a-z|A-Z]
+caracter    [0-9a-zA-Z\=\;\+\- \/\*]
+alfanum     [0-9a-zA-Z]
 condicion   [(if) | (else)]
-simbolo    [\=|\/|\+|\-|\*]
+simbolo    [\=\/\+\-\*]
 punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
-{bucle}\({caracter}+\)\{  {codigo_final=codigo_final+yytext;}
-{bucle}\({caracter}+\)  {codigo_final=codigo_final+yytext + "{" ;}
-{condicion}\({caracter}+\)  {codigo_final=codigo_final+yytext + "{" ;}
-{alfanum}*{simbolo}{alfanum}*   {poner_espacio_oper(yytext);}
-{alfanum}*{punto_coma}  {poner_espacio_final(yytext);}
-\{  {indentacion++;}
-\}  {indentacion--;}
+{bucle}\(([\=\/\+\-\*]{caracter})+\)\{  {codigo_final=codigo_final+yytext;}
+{bucle}\(([\=\/\+\-\*]{caracter})+\)  {codigo_final=codigo_final+yytext;codigo_final+="{";} 
 
-\n          {poner_indentacion();}
+\{  {indentacion++;codigo_final=codigo_final+yytext;}
+\}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
 
+
+\n      {poner_indentacion();}
+^[\t]	{codigo_final=codigo_final+yytext;}
+
+.		{codigo_final+=yytext;}
 
 %%
 /*----- Sección de Procedimientos --------*/
@@ -54,7 +56,7 @@ int main (int argc, char *argv[]) {
 
 int yywrap(){
   escribe_fichero();
-  return 0;
+  return 1;
 }
 
 void poner_indentacion(){
@@ -65,15 +67,12 @@ void poner_indentacion(){
 }
 
 void escribe_fichero(){
-  ofstream fi;
-  fi.open("salida.txt");
-  if(!fi){
-    cerr<<"Error al generar archivo de salida"<<endl;
-    exit(-1);
-  }
+  std::ofstream outfile ("salida.txt");
 
-  fi<<codigo_final;
-  fi.close();
+  int size = codigo_final.length();
+  outfile.write(codigo_final.c_str(), size);
+  outfile.close();
+
 }
 
 
