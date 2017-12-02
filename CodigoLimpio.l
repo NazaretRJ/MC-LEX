@@ -17,7 +17,7 @@
 	
 %}
 bucle   [(for)|(while)]
-caracter    [0-9a-zA-Z\=\;\+\- \/\*]
+caracter    [0-9a-zA-Z\=\;\+\- \/\*\<\>\)\]\[\(]
 alfanum     [0-9a-zA-Z]
 condicion   [(if) | (else)]
 simbolo    [\=\/\+\-\*]
@@ -33,7 +33,7 @@ punto_coma  [\;]
 \n      {poner_indentacion();}
 ^[\t]	{codigo_final=codigo_final+yytext;}
 
-{alfanum}*{punto_coma}	{poner_espacio_final(yytext);}
+{caracter}*{punto_coma}	{poner_espacio_final(yytext);}
 .		{codigo_final+=yytext;}
 
 
