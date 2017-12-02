@@ -74,6 +74,7 @@ void escribe_fichero(){
   int size = codigo_final.length();
   outfile.write(codigo_final.c_str(), size);
   outfile.close();
+  cout<<"FIN"<<endl;
 
 }
 
