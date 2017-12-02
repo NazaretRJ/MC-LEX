@@ -33,6 +33,7 @@ punto_coma  [\;]
 \n      {poner_indentacion();}
 ^[\t]	{codigo_final=codigo_final+yytext;}
 
+{alfanum}*{punto_coma}	{poner_espacio_final(yytext);}
 .		{codigo_final+=yytext;}
 
 
