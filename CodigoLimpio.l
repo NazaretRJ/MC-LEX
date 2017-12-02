@@ -12,8 +12,9 @@
     void escribir_datos ();
     void poner_indentacion();
     void escribe_fichero();
-	void poner_espacio_final(string orig);
-	void poner_espacio_oper(string orig);
+    void poner_espacio_final(string orig);
+    void poner_espacio_oper(string orig);
+    void codigo_sin_tabulador(string orig);
 	
 %}
 bucle   [(for)|(while)]
@@ -31,7 +32,7 @@ punto_coma  [\;]
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
 
 \n      {poner_indentacion();}
-^[\t]	{codigo_final=codigo_final+yytext;}
+[\t]*	{codigo_sin_tabulador(yytext);}
 
 {caracter}*{punto_coma}	{poner_espacio_final(yytext);}
 .		{codigo_final+=yytext;}
@@ -106,3 +107,14 @@ void poner_espacio_oper(string orig){
 }
 
 
+void codigo_sin_tabulador(string orig){
+
+string aux;
+
+	for(int i = 0; i < orig.size() ; i++){
+		if(orig[i]!='\t'){
+			aux.append(orig[i],sizeof(char));
+		}
+	}
+	codigo_final=codigo_final+aux;
+}
