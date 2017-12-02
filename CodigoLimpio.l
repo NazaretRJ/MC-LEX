@@ -30,11 +30,11 @@ punto_coma  [\;]
 \{  {indentacion++;codigo_final=codigo_final+yytext;}
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
 
-
 \n      {poner_indentacion();}
 ^[\t]	{codigo_final=codigo_final+yytext;}
 
 .		{codigo_final+=yytext;}
+
 
 %%
 /*----- Sección de Procedimientos --------*/
