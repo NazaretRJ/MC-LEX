@@ -25,6 +25,9 @@ simbolo    [\=\/\+\-\*]
 punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
+{condicion}\({caracter2}+\)\{	{codigo_final=codigo_final+yytext;}
+{condicion}\({caracter2}+\)	{codigo_final=codigo_final+yytext;codigo_final+="{";}
+
 {bucle}\(([\=\/\+\-\*]{caracter})+\)\{  {codigo_final=codigo_final+yytext;}
 {bucle}\(([\=\/\+\-\*]{caracter})+\)  {codigo_final=codigo_final+yytext;codigo_final+="{";} 
 
