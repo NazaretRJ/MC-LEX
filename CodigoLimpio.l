@@ -28,6 +28,7 @@ simbolo    [\=\/\+\-\*]
 punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
+"else"\n	{indentacion++;codigo_final=codigo_final+"else";poner_indentacion();indentacion--;}
 {condicion}\({caracter}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
 {condicion}\({caracter}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
 
