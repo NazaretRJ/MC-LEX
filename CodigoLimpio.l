@@ -29,10 +29,10 @@ punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
 {condicion}\({caracter}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{condicion}\({caracter}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";}
+{condicion}\({caracter}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
 
 {bucle}\({caracter2}+\)\{  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{bucle}\({caracter2}+\)  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";} 
+{bucle}\({caracter2}+\)  {saltar=true;indentacion++;codigo_final=codigo_final+yytext+"{";} 
 
 \{  {llaves(yytext);}
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
