@@ -20,18 +20,19 @@
 	
 %}
 bucle   [(for)|(while)]
-caracter    [0-9a-zA-Z\=\;\+\- \/\*\<\>\)\]\[\(]
+caracter    [0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(]
+caracter2	[0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(\ \;]
 alfanum     [0-9a-zA-Z]
 condicion   [(if) | (else)]
 simbolo    [\=\/\+\-\*]
 punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
-{condicion}\({caracter2}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{condicion}\({caracter2}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";}
+{condicion}\({caracter}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
+{condicion}\({caracter}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";}
 
-{bucle}\(([\=\/\+\-\*]{caracter})+\)\{  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{bucle}\(({caracter2}*{punto_coma}{caracter2}*{punto_coma}{caracter2}*)+\)  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";} 
+{bucle}\({caracter2}+\)\{  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
+{bucle}\({caracter2}+\)  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";} 
 
 \{  {llaves(yytext);}
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
