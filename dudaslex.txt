@@ -30,8 +30,9 @@ void poner_espacio_oper(string orig){
 
 
 SI ES UN IF/ELSE SOLO HAY QUE PONER INDENTACION Y LUEGO QUITARLA XD
-
-
+["else"][\n]*	{indentacion++;poner_indentacion();indentacion--;} si hago esto le quita la e al else y no le pone indentacion
+o 
+{condicion}[\n]* (puede haber varios saltos) tampoco sale
 srand (time(NULL)); si ponemos espacio, le pone una {
 
 
