@@ -20,7 +20,7 @@
 	
 %}
 bucle   [(for)|(while)]
-caracter    [0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(]
+caracter    [0-9a-zA-Z\=\ \+\-\/\*\<\>\)\]\[\(]
 caracter2	[0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(\ \;]
 alfanum     [0-9a-zA-Z]
 condicion   [(if) | (else)]
