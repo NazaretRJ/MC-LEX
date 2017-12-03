@@ -9,12 +9,14 @@
     std::string codigo_inicial;
     std::string codigo_final;
     int indentacion;
+    bool saltar;
     void escribir_datos ();
     void poner_indentacion();
     void escribe_fichero();
     void poner_espacio_final(string orig);
     void poner_espacio_oper(string orig);
     void codigo_sin_tabulador(string orig);
+    void llaves(string orig);
 	
 %}
 bucle   [(for)|(while)]
@@ -25,13 +27,13 @@ simbolo    [\=\/\+\-\*]
 punto_coma  [\;]
 /*----- Sección de Reglas ----------------*/
 %%
-{condicion}\({caracter2}+\)\{	{codigo_final=codigo_final+yytext;}
-{condicion}\({caracter2}+\)	{codigo_final=codigo_final+yytext;codigo_final+="{";}
+{condicion}\({caracter2}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
+{condicion}\({caracter2}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";}
 
-{bucle}\(([\=\/\+\-\*]{caracter})+\)\{  {codigo_final=codigo_final+yytext;}
-{bucle}\(([\=\/\+\-\*]{caracter})+\)  {codigo_final=codigo_final+yytext;codigo_final+="{";} 
+{bucle}\(([\=\/\+\-\*]{caracter})+\)\{  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
+{bucle}\(({caracter2}*{punto_coma}{caracter2}*{punto_coma}{caracter2}*)+\)  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;codigo_final+="{";} 
 
-\{  {indentacion++;codigo_final=codigo_final+yytext;}
+\{  {llaves(yytext);}
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
 
 \n      {poner_indentacion();}
@@ -53,6 +55,7 @@ int main (int argc, char *argv[]) {
     }
     else yyin = stdin;
     indentacion = 0;
+    saltar=false;
     yylex ();
     return 0;
 }
@@ -121,4 +124,13 @@ string aux;
 		}
 	}
 	codigo_final=codigo_final+aux;
+}
+void llaves(string orig){
+	if(saltar == false){
+		indentacion++;
+		codigo_final=codigo_final+yytext+'\n';
+	}
+	else
+		saltar=false;
+
 }
