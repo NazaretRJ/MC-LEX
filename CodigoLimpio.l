@@ -9,7 +9,7 @@
     std::string codigo_inicial;
     std::string codigo_final;
     int indentacion;
-    bool saltar;
+    bool saltar,sin_llave,fin_cod;
     void escribir_datos ();
     void poner_indentacion();
     void escribe_fichero();
@@ -33,11 +33,11 @@ punto_coma  [\;]
 
 
 {bucle}+\({caracter2}+\)\{  {saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{bucle}+\({caracter2}+\)	{saltar=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
+{bucle}+\({caracter2}+\)	{saltar=true;sin_llave=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
 
 
 {condicion}+\({caracter}+\)\{	{saltar=true;indentacion++;codigo_final=codigo_final+yytext;}
-{condicion}+\({caracter}+\) {saltar=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
+{condicion}+\({caracter}+\) {saltar=true;sin_llave=true;indentacion++;codigo_final=codigo_final+yytext+"{";}
 
 \{  {llaves(yytext);}
 \}  {--indentacion;codigo_final[codigo_final.length()-1]=*yytext;}
@@ -62,8 +62,9 @@ int main (int argc, char *argv[]) {
     else yyin = stdin;
     indentacion = 0;
     saltar=false;
+    sin_llave=false;
+    fin_cod=false;
     yylex ();
-    return 0;
 }
 
 
@@ -74,10 +75,21 @@ int yywrap(){
 }
 
 void poner_indentacion(){
-  codigo_final=codigo_final+'\n';
-  for(int i = 0; i < indentacion; i++)
-    codigo_final=codigo_final+'\t';
-
+	codigo_final=codigo_final+'\n';
+	for(int i = 0; i < indentacion; i++)
+		codigo_final=codigo_final+'\t';
+  
+	if(sin_llave==true && fin_cod == true){
+		codigo_final=codigo_final+'}';
+		sin_llave=false;
+		fin_cod=false;
+	}
+	else{
+		if(sin_llave==true){
+			fin_cod=true;
+			indentacion--;
+		}
+	}
 }
 
 void escribe_fichero(){
@@ -131,12 +143,18 @@ string aux;
 	}
 	codigo_final=codigo_final+aux;
 }
+
 void llaves(string orig){
 	if(saltar == false){
 		indentacion++;
 		codigo_final=codigo_final+yytext+'\n';
 	}
-	else
+	else{
+		//no había llave y hemos encontrado una
+		//nos la saltamos
 		saltar=false;
+		sin_llave=false;			
 
+	}
 }
+
