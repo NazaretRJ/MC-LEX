@@ -36,6 +36,7 @@ punto_coma  [\;]
 
 <INITIAL>{bucle}+\({caracter2}+\)	{codigo_final=codigo_final+yytext;BEGIN BUSCAR_LLAVE;}
 {bucle}+\({caracter2}+\)\{  {indentacion++;codigo_final=codigo_final+yytext;}
+<INITIAL>{condicion}+\({caracter}+\)	{codigo_final=codigo_final+yytext;BEGIN BUSCAR_LLAVE;}
 
 <BUSCAR_LLAVE>{caracter2}+	{indentacion++;poner_indentacion();codigo_final=codigo_final+yytext+"\n";indentacion--;BEGIN INITIAL;}
 <BUSCAR_LLAVE>[ \t\n]*\{	{codigo_final=codigo_final+"{";indentacion++;BEGIN IMPRIMIR_LLAVE;}
@@ -43,7 +44,7 @@ punto_coma  [\;]
 <IMPRIMIR_LLAVE>\}	{indentacion--;poner_indentacion();codigo_final=codigo_final+"}";BEGIN INITIAL;}
 
 ^[ \t]*\{	{}
-{caracter2}+\{  {indentacion++;}
+{caracter2}+\{  {codigo_final+=yytext;indentacion++;}
 \}  {indentacion--;codigo_final[codigo_final.length()-1]=*yytext;}
 
 \n	{poner_indentacion();}
