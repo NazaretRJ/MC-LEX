@@ -19,11 +19,13 @@
 
 
 %}
+
 bucle	((for)|(while))
 caracter    [0-9a-zA-Z\=\ \+\-\/\*\<\>\)\]\[\(]
 caracter2	[0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(\ ]
 alfanum     [0-9a-zA-Z]
 condicion	((if)|(else))
+
 simbolo    [\=\/\+\-\*\<\>]
 punto_coma  [\;]
 cart_main	[a-z\*]
@@ -37,6 +39,7 @@ cart_main	[a-z\*]
 
 <INITIAL>{bucle}+\({caracter2}+\)	{codigo_final=codigo_final+yytext;BEGIN BUSCAR_LLAVE;}
 {bucle}+\({caracter2}+\)\{  {indentacion++;codigo_final=codigo_final+yytext;}
+
 <BUSCAR_LLAVE>{caracter2}+	{indentacion++;poner_indentacion();codigo_final=codigo_final+yytext+"\n";indentacion--;BEGIN INITIAL;}
 <BUSCAR_LLAVE>[ \t\n]*\{	{codigo_final=codigo_final+"{";indentacion++;BEGIN IMPRIMIR_LLAVE;}
 <IMPRIMIR_LLAVE>{caracter2}+\n	{poner_indentacion();codigo_final=codigo_final+yytext;}
@@ -47,6 +50,7 @@ cart_main	[a-z\*]
 {caracter2}+\{  {codigo_final+=yytext;indentacion++;}
 {caracter2}+\n\{	{codigo_final+=yytext;indentacion++;}	
 ^[ \t\n]*\} {indentacion--;poner_indentacion();codigo_final=codigo_final+"}";}
+
 
 \n	{poner_indentacion();}
 [\t]*	{codigo_sin_tabulador(yytext);}

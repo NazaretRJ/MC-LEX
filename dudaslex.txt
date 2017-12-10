@@ -1,0 +1,53 @@
+//dudas
+
+	coge los puntos y coma en caso que sea alfanum simbolo alfanum??
+
+
+
+
+
+si no tiene tab pone uno, pero si tiene le pone dos. La tabulación está mal,pone una de más en cosas entre llaves
+
+{punto_coma}+{caracter}*{punto_coma}+	{poner_espacio_entre_punto_coma(yytext);}
+
+
+void poner_espacio_oper(string orig){
+	string aux;
+	int i=0;
+	
+			
+			aux.append(" ",sizeof(char));
+			while(i < orig.size() && (orig[i]=='/'||orig[i]=='+'||orig[i]=='-'||orig[i]=='*'||orig[i]=='<'||orig[i]=='>')){
+				aux.append(orig[i],sizeof(char));
+				i++;
+			}
+			aux.append(" ",sizeof(char));
+		
+	codigo_final=codigo_final+aux;
+	
+}
+
+
+
+srand (time(NULL)); si ponemos espacio en caracteres, le pone una {
+
+
+if(hola>0){
+while(hola != 10)
+{
+hola++;
+}
+	cout<<hola<<endl;
+
+}
+
+
+no lo hace bien sale:
+
+	if(hola>0){
+		while(hola != 10)
+		
+		hola++ ;
+	}
+no reconoce indentacion de while y no le pone llaves
+

@@ -9,6 +9,7 @@
     std::string codigo_inicial;
     std::string codigo_final;
     int indentacion;
+
 	bool saltar,sin_llave,fin_cod;
     void escribir_datos ();
     void poner_indentacion();
@@ -24,6 +25,7 @@ caracter    [0-9a-zA-Z\=\ \+\-\/\*\<\>\)\]\[\(]
 caracter2	[0-9a-zA-Z\=\;\+\-\/\*\<\>\)\]\[\(\ ]
 alfanum     [0-9a-zA-Z]
 condicion	((if)|(else))
+
 simbolo    [\=\/\+\-\*\<\>]
 punto_coma  [\;]
 
@@ -32,6 +34,7 @@ punto_coma  [\;]
 
 /*----- Sección de Reglas ----------------*/
 %%
+
 
 
 <INITIAL>({bucle}|{condicion})+\({caracter2}+\)	{codigo_final=codigo_final+yytext;BEGIN BUSCAR_LLAVE;}
@@ -51,6 +54,8 @@ punto_coma  [\;]
 
 {caracter}*{punto_coma}	{poner_espacio_final(yytext);}
 
+
+{caracter}*{punto_coma}	{poner_espacio_final(yytext);}
 .		{codigo_final+=yytext;}
 
 
@@ -66,11 +71,12 @@ int main (int argc, char *argv[]) {
     }
     else yyin = stdin;
     indentacion = 0;
+
 	saltar=false;
 	sin_llave=false;
 	fin_cod=false;
+
     yylex ();
-    return 0;
 }
 
 
@@ -82,7 +88,9 @@ int yywrap(){
 
 void poner_indentacion(){
 	codigo_final=codigo_final+'\n';
+
 	for(int i = 1; i < indentacion; i++)
+
 		codigo_final=codigo_final+'\t';
   
 	if(sin_llave==true && fin_cod == true){
@@ -104,7 +112,10 @@ void escribe_fichero(){
   int size = codigo_final.length();
   outfile.write(codigo_final.c_str(), size);
   outfile.close();
-cout<<"FIN"<<endl;
+
+  cout<<"FIN"<<endl;
+
+
 }
 
 
@@ -143,6 +154,8 @@ void codigo_sin_tabulador(string orig){
 
 string aux;
 
+
+
 	for(int i = 0; i < orig.size() ; i++){
 		if(orig[i]!='\t'){
 			aux.append(orig[i],sizeof(char));
@@ -150,3 +163,4 @@ string aux;
 	}
 	codigo_final=codigo_final+aux;
 }
+
